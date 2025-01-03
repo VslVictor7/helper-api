@@ -1,0 +1,21 @@
+services:
+  endpoint:
+    container_name: image-API
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      - ENV=development
+    restart: always
+    networks:
+      - request
+
+networks:
+  request:
+    external: true
