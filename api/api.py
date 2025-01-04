@@ -10,7 +10,7 @@ load_dotenv()
 
 DEBUG = os.getenv("DEBUG")
 HOST = os.getenv("HOST")
-PORT = os.getenv("PORT")
+PORT = int(os.getenv("PORT"))
 URL = os.getenv("URL")
 
 app = Flask(__name__)
@@ -55,7 +55,9 @@ def get_image_mapping():
     mapping = {}
     for image in images:
         friendly_name = re.sub(r'([a-z])([A-Z])', r'\1 \2', image.split('.')[0])
-        mapping[friendly_name.lower()] = image  # Chave em minúsculas para busca fácil
+        no_space_friendly_name = friendly_name.replace(" ", "").lower()
+        mapping[friendly_name.lower()] = image
+        mapping[no_space_friendly_name] = image
     return mapping
 
 
@@ -63,13 +65,12 @@ def get_image_mapping():
 def get_image_by_name(name):
     """Retorna o link da imagem e o nome, dado o nome amigável."""
     try:
-        filename = secure_filename(filename)
-        name = secure_filename(name)
         mapping = get_image_mapping()
-        filename = mapping.get(name.lower())  # Buscar o nome do arquivo correspondente
+        filename = mapping.get(name.lower())
+        if not filename:
+            filename = mapping.get(name.replace(" ", "").lower())
         if not filename:
             return jsonify({"error": "Imagem não encontrada."}), 404
-
         image_url = filename
         return jsonify({"name": name, "url": f"{URL}{image_url}"}), 200
     except Exception as e:
