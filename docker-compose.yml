@@ -1,6 +1,6 @@
 services:
   endpoint:
-    container_name: image-API
+    container_name: helper-api
     build:
       context: .
       dockerfile: Dockerfile
