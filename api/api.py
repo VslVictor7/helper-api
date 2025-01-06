@@ -32,7 +32,6 @@ def log_request_info():
 
 @app.route('/images', methods=['GET'])
 def list_images():
-    """Retorna a lista de images disponíveis."""
     try:
         images = os.listdir(IMAGE_DIR)
         image_list = [{"filename": image, "name": re.sub(r'([a-z])([A-Z])', r'\1 \2', image.split('.')[0])} for image in images]
@@ -42,7 +41,6 @@ def list_images():
 
 @app.route('/images/png/<filename>', methods=['GET'])
 def get_image(filename):
-    """Retorna a imagem especificada."""
     filename = secure_filename(filename)
     file_path = os.path.join(IMAGE_DIR, filename)
     if not os.path.exists(file_path):
@@ -54,7 +52,6 @@ def get_image(filename):
         return jsonify({"error": str(e)}), 500
 
 def get_image_mapping():
-    """Gera um mapeamento entre nomes amigáveis e nomes reais."""
     images = os.listdir(IMAGE_DIR)
     mapping = {}
     for image in images:
@@ -67,7 +64,6 @@ def get_image_mapping():
 
 @app.route('/images/<name>', methods=['GET'])
 def get_image_by_name(name):
-    """Retorna o link da imagem e o nome, dado o nome amigável."""
     try:
         mapping = get_image_mapping()
         filename = mapping.get(name.lower())
@@ -83,7 +79,6 @@ def get_image_by_name(name):
 
 @app.route('/mobs', methods=['GET'])
 def list_mobs():
-    """Retorna o JSON com a lista de mobs."""
     try:
 
         json_file_path = os.path.join(MOBS_DIR, 'mobs.json')
@@ -102,7 +97,6 @@ def list_mobs():
 @app.route('/deaths', methods=['GET'])
 def list_deaths():
     try:
-
         json_file_path = os.path.join(DEATHS_DIR, 'deaths.json')
 
         if not os.path.exists(json_file_path):
