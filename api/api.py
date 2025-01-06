@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 import logging
 import os
 import re
+import json
+from flask import Response
 
 load_dotenv()
 
@@ -18,6 +20,8 @@ app = Flask(__name__)
 Talisman(app)
 
 IMAGE_DIR = "/app/api/images"
+MOBS_DIR = "/app/api/mobs"
+DEATHS_DIR = "/app/api/deaths"
 
 logging.basicConfig(filename='api.log', level=logging.INFO)
 
@@ -73,6 +77,42 @@ def get_image_by_name(name):
             return jsonify({"error": "Imagem não encontrada."}), 404
         image_url = filename
         return jsonify({"name": name, "url": f"{URL}{image_url}"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/mobs', methods=['GET'])
+def list_mobs():
+    """Retorna o JSON com a lista de mobs."""
+    try:
+
+        json_file_path = os.path.join(MOBS_DIR, 'mobs.json')
+
+        if not os.path.exists(json_file_path):
+            return jsonify({"error": "Arquivo JSON de mobs não encontrado."}), 404
+
+        with open(json_file_path, 'r', encoding='utf-8') as file:
+            mobs_data = json.load(file)
+
+        response_data = json.dumps(mobs_data, ensure_ascii=False, indent=4)
+        return Response(response_data, content_type="application/json; charset=utf-8"), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/deaths', methods=['GET'])
+def list_deaths():
+    try:
+
+        json_file_path = os.path.join(DEATHS_DIR, 'deaths.json')
+
+        if not os.path.exists(json_file_path):
+            return jsonify({"error": "Arquivo JSON de mobs nao encontrado."}), 404
+
+        with open(json_file_path, 'r', encoding='utf-8') as file:
+            mobs_data = json.load(file)
+
+        response_data = json.dumps(mobs_data, ensure_ascii=False, indent=4)
+        return Response(response_data, content_type="application/json; charset=utf-8"), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
