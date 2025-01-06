@@ -40,7 +40,7 @@ pip install -r requirements.txt
 py api.py
 ```
 
-- Or
+Or
 
 - **Running with Docker-Compose**
 ```bash
