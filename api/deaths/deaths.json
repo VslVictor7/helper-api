@@ -14,6 +14,7 @@
     "{player} was obliterated by a sonically-charged shriek while trying to escape {entity}": "foi obliterado(a) por um grito sônico carregado enquanto tentava escapar de {entity}",
     "{player} was fireballed by {entity} using {item}": "foi atingido(a) por uma bola de fogo de {entity} usando {item}",
     "{player} got finished off by {entity} using {item}": "foi finalizado(a) por {entity} usando {item}",
+    "{player} was smashed by {entity} using {item}": "foi esmagado(a) por {entity} usando {item}",
 
     "{player} walked into a cactus whilst trying to escape {entity}": "andou em um cacto tentando escapar de {entity}",
     "{player} drowned while trying to escape {entity}": "se afogou tentando escapar de {entity}",
@@ -46,6 +47,7 @@
     "{player} died because of {entity}": "morreu por causa de {entity}",
     "{player} was fireballed by {entity}": "foi atingido(a) por uma bola de fogo de {entity}",
     "{player} was killed trying to hurt {entity}": "morreu tentando machucar {entity}",
+    "{player} was smashed by {entity}": "foi esmagado(a) por {entity}",
 
     "{player} was doomed to fall": "estava condenado(a) a cair",
     "{player} was killed": "foi morto(a)",
@@ -86,5 +88,6 @@
     "{player} was stung to death": "foi picado(a) até a morte",
     "{player} was a bit too silly": "foi um pouco bobo(a) demais",
     "{player} left the confines of this world": "deixou os limites deste mundo",
-    "{player} was squashed by a falling block": "foi esmagado(a) por um bloco que caiu"
+    "{player} was squashed by a falling block": "foi esmagado(a) por um bloco que caiu",
+    "{player} was smashed": "foi esmagado(a)"
 }
