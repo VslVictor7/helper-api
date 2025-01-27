@@ -55,12 +55,11 @@ def get_image_mapping():
     images = os.listdir(IMAGE_DIR)
     mapping = {}
     for image in images:
-        friendly_name = re.sub(r'([a-z])([A-Z])', r'\1 \2', image.split('.')[0])
+        friendly_name = image.split('.')[0].replace('_', ' ')
         no_space_friendly_name = friendly_name.replace(" ", "").lower()
         mapping[friendly_name.lower()] = image
         mapping[no_space_friendly_name] = image
     return mapping
-
 
 @app.route('/images/<name>', methods=['GET'])
 def get_image_by_name(name):
@@ -72,7 +71,8 @@ def get_image_by_name(name):
         if not filename:
             return jsonify({"error": "Imagem não encontrada."}), 404
         image_url = filename
-        return jsonify({"name": name, "url": f"{URL}{image_url}"}), 200
+        mob = image_url.replace(".png", "")
+        return jsonify({"name": mob, "url": f"{URL}{image_url}"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
