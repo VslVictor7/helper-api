@@ -15,5 +15,5 @@ services:
     stdin_open: true
 
 networks:
-  production:
+  request:
     external: true
