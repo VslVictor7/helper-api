@@ -1,5 +1,11 @@
 services:
-  api:
+  helper-api:
     image: victorvsl7/helper-api:latest
     container_name: helper-api
     restart: unless-stopped
+    networks:
+      - request
+
+networks:
+  request:
+    external: true
