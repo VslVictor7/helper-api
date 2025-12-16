@@ -81,6 +81,7 @@ azure-pipelines.yml
 
 # Docker files (we don't need these inside the image)
 Dockerfile*
+compose.yaml
 docker-compose*.yml
 .dockerignore
 
