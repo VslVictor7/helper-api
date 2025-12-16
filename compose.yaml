@@ -1,0 +1,5 @@
+services:
+  api:
+    image: victorvsl7/helper-api:latest
+    container_name: helper-api
+    restart: unless-stopped
