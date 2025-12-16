@@ -28,8 +28,10 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 
 COPY . .
 
-COPY entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh \
+ && sed -i 's/\r$//' /app/entrypoint.sh
 
 EXPOSE 8000
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
