@@ -1,24 +1,35 @@
-# ======================
-# STAGE 1 — BUILD
-# ======================
-FROM python:3.14.2-alpine AS builder
+# ---------- base ----------
+FROM python:3.14.2-alpine AS base
 
-WORKDIR /build
-
-COPY requirements.txt .
-
-RUN apk add --no-cache gcc musl-dev libffi-dev && \
-    python -m pip install --upgrade pip setuptools wheel && \
-    pip install --no-cache-dir --prefix=/install -r requirements.txt
-
-# ======================
-# STAGE 2 — PROD
-# ======================
-FROM python:3.14.2-alpine
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-COPY --from=builder /install /usr/local
+# ---------- builder ----------
+FROM base AS builder
+
+RUN apk add --no-cache \
+    build-base \
+    libffi-dev
+
+COPY requirements.txt .
+
+RUN pip install --upgrade pip \
+ && pip install --no-cache-dir -r requirements.txt
+
+
+# ---------- runtime ----------
+FROM base AS runtime
+
+# copiar só o que interessa
+COPY --from=builder /usr/local/lib/python3.14/site-packages /usr/local/lib/python3.14/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
+
 COPY . .
 
-CMD ["python", "api/api.py"]
+COPY entrypoint.sh /entrypoint.sh
+
+EXPOSE 8000
+
+ENTRYPOINT ["/entrypoint.sh"]
