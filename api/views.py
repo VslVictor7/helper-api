@@ -90,7 +90,7 @@ class ImageByNameView(BaseAPIView):
 
             return Response({
                 "name": filename.replace(".png", ""),
-                "url": f"{request.build_absolute_uri('/')}{filename}"
+                "url": f"{request.build_absolute_uri('/')}images/png/{filename}"
             })
         except Exception as e:
             return Response(
