@@ -1,37 +1,17 @@
-# ---------- base ----------
-FROM python:3.14.2-alpine AS base
+FROM golang:1.25.5-alpine AS builder
 
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+ENV CGO_ENABLED=0
+WORKDIR /build
+COPY . .
+RUN go mod download
+RUN go build -ldflags="-w -s" -o helper-api ./cmd/api/main.go
+
+FROM scratch
 
 WORKDIR /app
 
-# ---------- builder ----------
-FROM base AS builder
-
-RUN apk add --no-cache \
-    build-base \
-    libffi-dev
-
-COPY requirements.txt .
-
-RUN pip install --upgrade pip \
- && pip install --no-cache-dir -r requirements.txt
-
-
-# ---------- runtime ----------
-FROM base AS runtime
-
-# copiar só o que interessa
-COPY --from=builder /usr/local/lib/python3.14/site-packages /usr/local/lib/python3.14/site-packages
-COPY --from=builder /usr/local/bin /usr/local/bin
-
-COPY . .
-
-COPY entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh \
- && sed -i 's/\r$//' /app/entrypoint.sh
+COPY media /app/media
+COPY --from=builder /build/helper-api /app/helper-api
 
 EXPOSE 8000
-
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT [ "/app/helper-api" ]

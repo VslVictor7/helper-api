@@ -1,11 +1,7 @@
 services:
   helper-api:
-    image: victorvsl7/helper-api:latest
+    build: .
     container_name: helper-api
     restart: unless-stopped
-    networks:
-      - request
-
-networks:
-  request:
-    external: true
+    ports:
+      - "8000:8000"
