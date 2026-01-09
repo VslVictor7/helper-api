@@ -6,7 +6,10 @@ COPY . .
 RUN go mod download
 RUN go build -ldflags="-w -s" -o helper-api ./cmd/api/main.go
 
-FROM scratch
+
+FROM alpine:3.23
+
+RUN apk add --no-cache curl
 
 WORKDIR /app
 

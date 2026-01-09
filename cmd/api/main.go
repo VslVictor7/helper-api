@@ -27,6 +27,7 @@ func main() {
 	mux.HandleFunc("GET /images", handlers.ImagesHandler)
 	mux.HandleFunc("GET /mobs", handlers.MobsHandler)
 	mux.HandleFunc("GET /deaths", handlers.DeathsHandler)
+	mux.HandleFunc("GET /health", handlers.HealthHandler)
 
 	server := http.Server{
 		Addr:    ":8000",
