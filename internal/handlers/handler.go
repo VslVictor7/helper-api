@@ -27,6 +27,20 @@ func writeJSON(w http.ResponseWriter, status int, data any) {
 	json.NewEncoder(w).Encode(data)
 }
 
+func baseURL(r *http.Request) string {
+	scheme := "http"
+
+	if r.TLS != nil {
+		scheme = "https"
+	}
+
+	if proto := r.Header.Get("X-Forwarded-Proto"); proto != "" {
+		scheme = proto
+	}
+
+	return scheme + "://" + r.Host
+}
+
 // --------------------
 // /images/
 // --------------------
@@ -109,9 +123,11 @@ func ImageByNameHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	base := baseURL(r)
+
 	writeJSON(w, http.StatusOK, map[string]string{
 		"name": strings.TrimSuffix(filename, ".png"),
-		"url":  "http://localhost:8080/images/png/" + filename,
+		"url":  base + "/images/png/" + filename,
 	})
 }
 
