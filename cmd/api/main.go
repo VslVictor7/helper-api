@@ -22,11 +22,11 @@ func loggingMiddleware(next http.Handler) http.Handler {
 func main() {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/images/png/", handlers.ImagePNGHandler)
-	mux.HandleFunc("/images/", handlers.ImageByNameHandler)
-	mux.HandleFunc("/images", handlers.ImagesHandler)
-	mux.HandleFunc("/mobs", handlers.MobsHandler)
-	mux.HandleFunc("/deaths", handlers.DeathsHandler)
+	mux.HandleFunc("GET /images/png/", handlers.ImagePNGHandler)
+	mux.HandleFunc("GET /images/", handlers.ImageByNameHandler)
+	mux.HandleFunc("GET /images", handlers.ImagesHandler)
+	mux.HandleFunc("GET /mobs", handlers.MobsHandler)
+	mux.HandleFunc("GET /deaths", handlers.DeathsHandler)
 
 	server := http.Server{
 		Addr:    ":8000",
