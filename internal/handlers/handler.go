@@ -3,7 +3,7 @@
 package handlers
 
 import (
-	"encoding/json"
+	"helper-api/internal/helpers"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -19,35 +19,12 @@ var (
 )
 
 // --------------------
-// Helpers
-// --------------------
-func writeJSON(w http.ResponseWriter, status int, data any) {
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(status)
-	json.NewEncoder(w).Encode(data)
-}
-
-func baseURL(r *http.Request) string {
-	scheme := "http"
-
-	if r.TLS != nil {
-		scheme = "https"
-	}
-
-	if proto := r.Header.Get("X-Forwarded-Proto"); proto != "" {
-		scheme = proto
-	}
-
-	return scheme + "://" + r.Host
-}
-
-// --------------------
 // /images/
 // --------------------
 func ImagesHandler(w http.ResponseWriter, r *http.Request) {
 	files, err := os.ReadDir(imageDir)
 	if err != nil {
-		writeJSON(w, http.StatusInternalServerError, map[string]string{
+		helpers.WriteJSON(w, http.StatusInternalServerError, map[string]string{
 			"error": err.Error(),
 		})
 		return
@@ -66,7 +43,7 @@ func ImagesHandler(w http.ResponseWriter, r *http.Request) {
 		})
 	}
 
-	writeJSON(w, http.StatusOK, map[string]any{
+	helpers.WriteJSON(w, http.StatusOK, map[string]any{
 		"images": images,
 	})
 }
@@ -81,7 +58,7 @@ func ImagePNGHandler(w http.ResponseWriter, r *http.Request) {
 	path := filepath.Join(imageDir, filename)
 
 	if _, err := os.Stat(path); err != nil {
-		writeJSON(w, http.StatusNotFound, map[string]string{
+		helpers.WriteJSON(w, http.StatusNotFound, map[string]string{
 			"error": "Imagem não encontrada.",
 		})
 		return
@@ -99,7 +76,7 @@ func ImageByNameHandler(w http.ResponseWriter, r *http.Request) {
 
 	files, err := os.ReadDir(imageDir)
 	if err != nil {
-		writeJSON(w, http.StatusInternalServerError, map[string]string{
+		helpers.WriteJSON(w, http.StatusInternalServerError, map[string]string{
 			"error": err.Error(),
 		})
 		return
@@ -117,15 +94,15 @@ func ImageByNameHandler(w http.ResponseWriter, r *http.Request) {
 
 	filename := mapping[name]
 	if filename == "" {
-		writeJSON(w, http.StatusNotFound, map[string]string{
+		helpers.WriteJSON(w, http.StatusNotFound, map[string]string{
 			"error": "Imagem não encontrada.",
 		})
 		return
 	}
 
-	base := baseURL(r)
+	base := helpers.BaseURL(r)
 
-	writeJSON(w, http.StatusOK, map[string]string{
+	helpers.WriteJSON(w, http.StatusOK, map[string]string{
 		"name": strings.TrimSuffix(filename, ".png"),
 		"url":  base + "/images/png/" + filename,
 	})
@@ -137,7 +114,7 @@ func ImageByNameHandler(w http.ResponseWriter, r *http.Request) {
 func MobsHandler(w http.ResponseWriter, r *http.Request) {
 	data, err := os.ReadFile(mobsFile)
 	if err != nil {
-		writeJSON(w, http.StatusNotFound, map[string]string{
+		helpers.WriteJSON(w, http.StatusNotFound, map[string]string{
 			"error": "Arquivo JSON de mobs não encontrado.",
 		})
 		return
@@ -153,7 +130,7 @@ func MobsHandler(w http.ResponseWriter, r *http.Request) {
 func DeathsHandler(w http.ResponseWriter, r *http.Request) {
 	data, err := os.ReadFile(deathsFile)
 	if err != nil {
-		writeJSON(w, http.StatusNotFound, map[string]string{
+		helpers.WriteJSON(w, http.StatusNotFound, map[string]string{
 			"error": "Arquivo JSON de deaths não encontrado.",
 		})
 		return
