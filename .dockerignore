@@ -1,179 +1,69 @@
-# Git files
+# Dockerignore for a Go project
+
+# Binaries and build output
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+bin/
+build/
+dist/
+
+# Go vendor and cached builds
+vendor/
+Godeps/
+pkg/
+
+# Go build cache artifacts
+**/go-build*
+
+# Module and temp files (keep go.mod/go.sum in context)
+*.modcache
+
+# Version control
 .git
 .gitignore
 .gitattributes
-.github/
 
-# Python cache
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-
-# Virtual environments
-venv/
-env/
-ENV/
-.venv
-virtualenv/
-
-# Distribution / packaging
-*.egg-info/
-dist/
-build/
-*.egg
-wheels/
-pip-wheel-metadata/
-
-# Django stuff
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Testing
-.pytest_cache/
-.coverage
-.coverage.*
-htmlcov/
-.tox/
-.nox/
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
-.pytest_cache/
-pytestdebug.log
+# Environment files
+.env
+.env.*
 
 # IDEs and editors
 .vscode/
 .idea/
 *.swp
 *.swo
-*.swn
 *.bak
-*~
+
+# OS files
 .DS_Store
-*.sublime-project
-*.sublime-workspace
-.project
-.pydevproject
-.settings/
+Thumbs.db
+Desktop.ini
 
-# Documentation
-docs/
-*.md
-*.rst
-README*
-LICENSE*
-CHANGELOG*
-CONTRIBUTING*
-AUTHORS*
-
-# CI/CD
-.travis.yml
-.gitlab-ci.yml
-.circleci/
-.github/
-Jenkinsfile
-azure-pipelines.yml
-
-# Docker files (we don't need these inside the image)
-Dockerfile*
-compose.yaml
-docker-compose*.yml
-.dockerignore
-
-# Environment files with secrets
-.env
-.env.*
-!.env.example
-
-# Static and media files (should be served separately in production)
-staticfiles/
-mediafiles/
-# Uncomment the following if you want to exclude media folder
-# media/
-
-# Development files
-*.db
-*.sqlite
-*.sqlite3
-
-# Node modules (if any frontend build tools)
+# Node / frontend (if present)
 node_modules/
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
 
-# OS specific files
-Thumbs.db
-.DS_Store
-Desktop.ini
-
-# Temporary files
-*.tmp
-*.temp
+# Logs and temp files
+logs/
+*.log
 tmp/
 temp/
 
-# Logs
-logs/
-*.log
+# Docker/compose and local ignore
+docker-compose*.yml
+.dockerignore
 
-# Backup files
-*.bak
-*.backup
+# Media and build artifacts
+staticfiles/
 
-# Coverage reports
+# Coverage and test artifacts
+coverage.out
+coverage.xml
 htmlcov/
 
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre
-.pyre/
-
-# pytype
-.pytype/
-
-# Celery
-celerybeat-schedule
-celerybeat.pid
-
-# Scripts that are only for local development
-scripts/local/
-scripts/dev/
-
-# Local configuration files
-local/
-.local/
-
-# Redis dump
-dump.rdb
-
-# Database dumps
-*.sql
-*.dump
-
-# Kubernetes config (if any)
-k8s/
-*.yaml
-*.yml
-!requirements.yml
-
-# Terraform (if any)
-.terraform/
-*.tfstate
-*.tfstate.*
-
-# Security files
-*.pem
-*.key
-*.crt
-*.p12
-secrets.yml
-credentials.json
+# Keep README, Dockerfile, go.mod, go.sum, and source files in build context
