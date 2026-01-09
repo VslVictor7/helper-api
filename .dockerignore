@@ -56,6 +56,7 @@ temp/
 
 # Docker/compose and local ignore
 docker-compose*.yml
+compose*.yaml
 .dockerignore
 
 # Media and build artifacts
