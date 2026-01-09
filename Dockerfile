@@ -1,16 +1,17 @@
 FROM golang:1.25.5-alpine AS builder
 
+ENV CGO_ENABLED=0
 WORKDIR /build
 COPY . .
 RUN go mod download
-RUN go build -o helper-api ./cmd/api/main.go
+RUN go build -ldflags="-w -s" -o helper-api ./cmd/api/main.go
 
 FROM scratch
 
 WORKDIR /app
 
-COPY /media /app/media
-COPY --from=builder /build/helper-api /helper-api
+COPY media /app/media
+COPY --from=builder /build/helper-api /app/helper-api
 
 EXPOSE 8000
-ENTRYPOINT [ "/helper-api" ]
+ENTRYPOINT [ "/app/helper-api" ]
