@@ -12,4 +12,5 @@ WORKDIR /app
 COPY /media /app/media
 COPY --from=builder /build/helper-api /helper-api
 
+EXPOSE 8000
 ENTRYPOINT [ "/helper-api" ]
