@@ -1,20 +1,26 @@
-FROM golang:1.25.5-alpine AS builder
+FROM golang:1.25.6-alpine AS app-builder
 
-ENV CGO_ENABLED=0
-WORKDIR /build
-COPY . .
-RUN go mod download
-RUN go build -ldflags="-w -s" -o helper-api ./cmd/api/main.go
-
-
-FROM alpine:3.23
-
-RUN apk add --no-cache curl
+RUN apk add --no-cache tzdata
 
 WORKDIR /app
+COPY . .
 
-COPY media /app/media
-COPY --from=builder /build/helper-api /app/helper-api
+RUN go mod download
 
-EXPOSE 8000
-ENTRYPOINT [ "/app/helper-api" ]
+ENV CGO_ENABLED=0
+ENV GOOS=linux
+ENV GOARCH=amd64
+
+RUN go build -ldflags="-s -w" -o helper-api ./cmd/api
+
+
+FROM scratch
+
+COPY --from=app-builder /usr/share/zoneinfo /usr/share/zoneinfo
+COPY --from=app-builder /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
+
+ENV TZ=America/Sao_Paulo
+
+COPY --from=app-builder /app/helper-api /helper-api
+
+ENTRYPOINT ["/helper-api"]
