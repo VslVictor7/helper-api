@@ -19,8 +19,9 @@ FROM scratch
 COPY --from=app-builder /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=app-builder /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
 
-ENV TZ=America/Sao_Paulo
-
 COPY --from=app-builder /app/helper-api /helper-api
+COPY --from=app-builder /app/media /media
+
+ENV TZ=America/Sao_Paulo
 
 ENTRYPOINT ["/helper-api"]
